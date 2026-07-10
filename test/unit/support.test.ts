@@ -54,4 +54,28 @@ describe('composition capability probing', () => {
       expect.objectContaining({ format: 'webm', videoCodec: 'vp09.00.40.08', audioCodec: 'opus' }),
     ]);
   });
+
+  it('falls back to a software-capable encoder when hardware preference is rejected', async () => {
+    const configurations: VideoEncoderConfig[] = [];
+    vi.stubGlobal('VideoEncoder', class {
+      static async isConfigSupported(config: VideoEncoderConfig): Promise<VideoEncoderSupport> {
+        configurations.push(config);
+        return {
+          config,
+          supported: config.hardwareAcceleration === 'no-preference',
+        };
+      }
+    });
+
+    await expect(__private__.probeVideoCodec('vp09.00.21.08', 640, 360, 30, 800_000))
+      .resolves.toEqual({
+        codec: 'vp09.00.21.08',
+        supported: true,
+        hardwareAcceleration: false,
+      });
+    expect(configurations.map((config) => config.hardwareAcceleration)).toEqual([
+      'prefer-hardware',
+      'no-preference',
+    ]);
+  });
 });

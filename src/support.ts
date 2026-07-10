@@ -124,20 +124,30 @@ async function probeVideoCodec(
     return { codec, supported: false, reason: 'VideoEncoder is unavailable.' };
   }
 
-  try {
-    const preferred = await VideoEncoder.isConfigSupported(
-      videoConfig(codec, width, height, frameRate, bitrate, 'prefer-hardware'),
-    );
-    if (preferred.supported) return { codec, supported: true, hardwareAcceleration: true };
-    const fallback = await VideoEncoder.isConfigSupported(
-      videoConfig(codec, width, height, frameRate, bitrate, 'no-preference'),
-    );
-    return fallback.supported
-      ? { codec, supported: true, hardwareAcceleration: false }
-      : { codec, supported: false, reason: 'The encoder rejected this configuration.' };
-  } catch (error) {
-    return { codec, supported: false, reason: errorMessage(error) };
+  const errors: string[] = [];
+  for (const hardwareAcceleration of ['prefer-hardware', 'no-preference'] as const) {
+    try {
+      const result = await VideoEncoder.isConfigSupported(
+        videoConfig(codec, width, height, frameRate, bitrate, hardwareAcceleration),
+      );
+      if (result.supported) {
+        return {
+          codec,
+          supported: true,
+          hardwareAcceleration: hardwareAcceleration === 'prefer-hardware',
+        };
+      }
+    } catch (error) {
+      errors.push(errorMessage(error));
+    }
   }
+  return {
+    codec,
+    supported: false,
+    reason: errors.length > 0
+      ? `The encoder rejected this configuration: ${errors.join('; ')}`
+      : 'The encoder rejected this configuration.',
+  };
 }
 
 async function probeAudioCodec(codec: string, bitrate: number): Promise<CodecSupport> {
@@ -417,15 +427,36 @@ async function runEncoderProbe(
       250_000,
       Math.round(bitrate * (width * height) / (targetWidth * targetHeight)),
     );
-    const probeConfig = videoConfig(codec, width, height, frameRate, probeBitrate, 'prefer-hardware');
-    const support = await VideoEncoder.isConfigSupported(probeConfig);
-    if (!support.supported) {
+    let probeConfig: VideoEncoderConfig | undefined;
+    const configurationErrors: string[] = [];
+    for (const hardwareAcceleration of ['prefer-hardware', 'no-preference'] as const) {
+      const candidate = videoConfig(
+        codec,
+        width,
+        height,
+        frameRate,
+        probeBitrate,
+        hardwareAcceleration,
+      );
+      try {
+        const support = await VideoEncoder.isConfigSupported(candidate);
+        if (support.supported) {
+          probeConfig = candidate;
+          break;
+        }
+      } catch (error) {
+        configurationErrors.push(errorMessage(error));
+      }
+    }
+    if (probeConfig === undefined) {
       return {
         status: 'failed',
         codec,
         width,
         height,
-        reason: 'The encoder rejected the probe configuration.',
+        reason: configurationErrors.length > 0
+          ? `The encoder rejected the probe configuration: ${configurationErrors.join('; ')}`
+          : 'The encoder rejected the probe configuration.',
       };
     }
 
@@ -727,4 +758,4 @@ export async function detectSupport(
   return report;
 }
 
-export const __private__ = { probeCanvases, selectCodecs };
+export const __private__ = { probeCanvases, probeVideoCodec, selectCodecs };
