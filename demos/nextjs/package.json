@@ -1,0 +1,33 @@
+{
+  "name": "yumcut-video-ads-nextjs-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "node scripts/sync-worker.mjs",
+    "dev": "next dev",
+    "prebuild": "node scripts/sync-worker.mjs",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "yumcut-video-ads": "file:../.."
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "8.5.16"
+    }
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

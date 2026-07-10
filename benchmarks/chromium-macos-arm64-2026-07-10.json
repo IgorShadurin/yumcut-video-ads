@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-07-10T18:58:32.079Z",
+  "environment": {
+    "browser": "Chrome for Testing 149.0.7827.55",
+    "host": "macOS arm64",
+    "userAgentPlatform": "Windows NT 10.0; Win64; x64",
+    "navigatorPlatform": "MacIntel",
+    "hardwareConcurrency": 10,
+    "deviceMemoryGiB": 32
+  },
+  "fixtureRevision": {
+    "templateSha256": "a6697679a63f593ca1154f9537172691cd3fc56f7312abeb38cce8449a7e3d86",
+    "squareSha256": "69eddd706533efc84cdc1a88945a48ab652a6968cd717e55d25323f35cdaaaeb",
+    "musicSha256": "d852eba0a9d86bae590a99d6cd6b155167dff5c26e4ad93d704999e840c9ce9f",
+    "fourKDecodeSha256": "c347017a5c7a708412a07442407333aa4aa6ecc9ef9194a930a9110607eed008",
+    "license": "CC-BY-3.0"
+  },
+  "mixedMedia": {
+    "width": 640,
+    "height": 360,
+    "frameRate": 30,
+    "durationSeconds": 2.5,
+    "layers": ["silent H.264 video", "silent VP9 video", "JPEG", "text", "synthetic Opus audio"],
+    "format": "mp4",
+    "fileSize": 247724,
+    "framesEncoded": 75,
+    "framesDropped": 0,
+    "wallClockMs": 511.1,
+    "engineElapsedMs": 375.6,
+    "realTimeFactor": 0.20444,
+    "decodeMs": 41.7,
+    "composeMs": 14.5,
+    "encodeMs": 218.9,
+    "peakJsHeapBytes": 9067768
+  },
+  "resolutionMatrix": [
+    {
+      "name": "360p",
+      "width": 640,
+      "height": 360,
+      "durationSeconds": 0.5,
+      "wallClockMs": 342.4,
+      "framesEncoded": 15,
+      "framesDropped": 0,
+      "fileSize": 50726
+    },
+    {
+      "name": "720p",
+      "width": 1280,
+      "height": 720,
+      "durationSeconds": 0.5,
+      "wallClockMs": 142.6,
+      "framesEncoded": 15,
+      "framesDropped": 0,
+      "fileSize": 155861
+    },
+    {
+      "name": "1080p",
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 0.5,
+      "wallClockMs": 183.3,
+      "framesEncoded": 15,
+      "framesDropped": 0,
+      "fileSize": 222215
+    },
+    {
+      "name": "4k",
+      "width": 3840,
+      "height": 2160,
+      "durationSeconds": 0.5,
+      "wallClockMs": 570.1,
+      "framesEncoded": 15,
+      "framesDropped": 0,
+      "fileSize": 301736
+    },
+    {
+      "name": "4k-five-minute",
+      "measuredAt": "2026-07-10T12:52:10.671Z",
+      "width": 3840,
+      "height": 2160,
+      "durationSeconds": 300,
+      "storageTarget": "OPFS FileSystemFileHandle",
+      "wallClockMs": 92571.5,
+      "engineElapsedMs": 92556.8,
+      "realTimeFactor": 0.3085716666666667,
+      "framesEncoded": 9000,
+      "framesDropped": 0,
+      "decodeMs": 2453.9,
+      "composeMs": 815.3,
+      "encodeMs": 88623.6,
+      "fileSize": 547298997,
+      "verifiedFileSize": 547298997
+    }
+  ]
+}

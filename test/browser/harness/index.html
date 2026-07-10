@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>video-ads browser harness</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-state="loading">
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">Playwright integration harness</p>
+          <h1>Browser video composition</h1>
+          <p class="lede">A real mixed-media render using the built package and local fixtures.</p>
+        </div>
+        <output id="status" class="status" aria-live="polite">Loading library…</output>
+      </header>
+
+      <section class="controls" aria-label="Harness controls">
+        <button id="support-button" type="button">Check support</button>
+        <button id="render-button" class="primary" type="button">Render test video</button>
+      </section>
+
+      <section class="progress-panel" aria-label="Render progress">
+        <div class="progress-label">
+          <span id="progress-stage">Idle</span>
+          <span id="progress-percent">0%</span>
+        </div>
+        <progress id="progress" max="1" value="0"></progress>
+        <p id="progress-message">Waiting to render the fixture composition.</p>
+      </section>
+
+      <section class="content-grid">
+        <article class="preview-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Output preview</p>
+              <h2>640 × 360 · 2.5 seconds</h2>
+            </div>
+            <a id="download" hidden>Save output</a>
+          </div>
+          <div class="video-shell">
+            <video id="preview" muted controls playsinline></video>
+            <div id="preview-placeholder">The composed video will appear here.</div>
+          </div>
+        </article>
+
+        <aside>
+          <article class="metrics-card">
+            <p class="eyebrow">Render metrics</p>
+            <dl id="metrics">
+              <div><dt>Container</dt><dd id="metric-format">—</dd></div>
+              <div><dt>Elapsed</dt><dd id="metric-elapsed">—</dd></div>
+              <div><dt>Frames</dt><dd id="metric-frames">—</dd></div>
+              <div><dt>File size</dt><dd id="metric-size">—</dd></div>
+            </dl>
+          </article>
+          <details open>
+            <summary>Capability report</summary>
+            <pre id="support-report">Support has not been checked yet.</pre>
+          </details>
+        </aside>
+      </section>
+
+      <p id="error" class="error" role="alert" hidden></p>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

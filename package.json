@@ -1,0 +1,77 @@
+{
+  "name": "yumcut-video-ads",
+  "version": "0.1.0",
+  "description": "YumCut Video Ads — fast, local-first video composition for modern browsers",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./worker": "./dist/render-worker.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "benchmarks",
+    "README.md",
+    "MEDIA_LICENSES.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "sideEffects": [
+    "./dist/render-worker.js"
+  ],
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "test:browser": "playwright test",
+    "verify:media": "node scripts/verify-media.mjs",
+    "install:demos": "node scripts/run-demo-tasks.mjs install",
+    "build:demos": "node scripts/run-demo-tasks.mjs build",
+    "test:demos": "node scripts/run-demo-tasks.mjs test",
+    "test:all": "npm run typecheck && npm run test && npm run verify:media && npm run build && npm run test:browser && npm run test:demos",
+    "dev": "vite --config examples/playground/vite.config.ts",
+    "benchmark": "playwright test test/browser/benchmark.spec.ts --project=chromium",
+    "prepare": "npm run build",
+    "prepack": "npm run clean && npm run test:unit"
+  },
+  "keywords": [
+    "video",
+    "webcodecs",
+    "browser",
+    "video-editor",
+    "video-composition",
+    "yumcut",
+    "mp4",
+    "webm"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IgorShadurin/yumcut-video-ads.git"
+  },
+  "homepage": "https://github.com/IgorShadurin/yumcut-video-ads#readme",
+  "bugs": {
+    "url": "https://github.com/IgorShadurin/yumcut-video-ads/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "mediabunny": "1.50.8",
+    "playwright": "^1.61.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.4",
+    "vitest": "^4.1.10"
+  }
+}

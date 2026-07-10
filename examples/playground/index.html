@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="Interactive browser playground for YumCut Video Ads"
+    />
+    <title>YumCut Video Ads playground</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Browser video composition</p>
+          <h1>YumCut Video Ads playground</h1>
+          <p class="lede">
+            Combine a template video with local media, check this browser, then render and
+            preview the result without uploading your files.
+          </p>
+        </div>
+        <div class="environment" id="environment-badge" aria-live="polite">Checking environment…</div>
+      </header>
+
+      <noscript>
+        <p class="notice error">This playground requires JavaScript.</p>
+      </noscript>
+
+      <section class="notice" aria-label="Browser requirements">
+        <strong>Before you begin:</strong> use HTTPS or localhost. Remote videos must allow CORS;
+        byte-range responses are recommended. Capability checks describe this browser and profile,
+        not guaranteed render speed.
+      </section>
+
+      <div class="workspace">
+        <section class="card controls-card" aria-labelledby="sources-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Step 1</p>
+              <h2 id="sources-title">Choose source media</h2>
+            </div>
+            <span class="hint">Files stay in this browser</span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Template source
+              <select id="template-mode">
+                <option value="url">Remote URL</option>
+                <option value="file">Local video file</option>
+              </select>
+            </label>
+
+            <label class="span-2" id="template-url-field">
+              Template video URL
+              <input
+                id="template-url"
+                type="url"
+                inputmode="url"
+                autocomplete="url"
+                placeholder="https://media.example.com/template.mp4"
+              />
+              <span class="field-help">The host must grant CORS access to this page.</span>
+            </label>
+
+            <label class="span-2 hidden" id="template-file-field">
+              Template video file
+              <input id="template-file" type="file" accept="video/*,.mp4,.webm,.mov,.mkv" />
+            </label>
+
+            <label class="check span-2" id="persistent-cache-field">
+              <input id="persistent-cache" type="checkbox" />
+              <span>
+                Use persistent template cache
+                <small>Prefetch explicitly before rendering to reuse the complete response.</small>
+              </span>
+            </label>
+
+            <label>
+              Overlay images
+              <input id="overlay-images" type="file" accept="image/*" multiple />
+            </label>
+
+            <label>
+              Overlay videos
+              <input id="overlay-videos" type="file" accept="video/*" multiple />
+            </label>
+
+            <label>
+              Additional audio
+              <input id="overlay-audio" type="file" accept="audio/*,video/*" multiple />
+            </label>
+
+            <label>
+              Caption <span class="optional">optional</span>
+              <input id="caption" type="text" maxlength="120" placeholder="A clear call to action" />
+            </label>
+          </div>
+
+          <div class="cache-actions" id="cache-actions">
+            <button id="prefetch-button" class="button secondary" type="button">Prefetch template</button>
+            <button id="clear-cache-button" class="button ghost" type="button">Clear template cache</button>
+            <output id="cache-summary" aria-live="polite">Cache not inspected yet.</output>
+          </div>
+        </section>
+
+        <section class="card output-card" aria-labelledby="output-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Step 2</p>
+              <h2 id="output-title">Set output</h2>
+            </div>
+          </div>
+
+          <div class="form-grid compact">
+            <label class="span-2">
+              Orientation and resolution
+              <select id="resolution">
+                <optgroup label="Landscape">
+                  <option value="landscape-720">Landscape · 1280 × 720</option>
+                  <option value="landscape-1080" selected>Landscape · 1920 × 1080</option>
+                  <option value="landscape-4k">Landscape · 3840 × 2160</option>
+                </optgroup>
+                <optgroup label="Portrait">
+                  <option value="portrait-720">Portrait · 720 × 1280</option>
+                  <option value="portrait-1080">Portrait · 1080 × 1920</option>
+                  <option value="portrait-4k">Portrait · 2160 × 3840</option>
+                </optgroup>
+              </select>
+            </label>
+
+            <label>
+              Frame rate
+              <select id="frame-rate">
+                <option value="24">24 fps</option>
+                <option value="30" selected>30 fps</option>
+                <option value="60">60 fps</option>
+              </select>
+            </label>
+
+            <label>
+              Format
+              <select id="format">
+                <option value="auto" selected>Auto</option>
+                <option value="mp4">MP4</option>
+                <option value="webm">WebM</option>
+              </select>
+            </label>
+
+            <label>
+              Quality
+              <select id="quality">
+                <option value="balanced" selected>Balanced</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+
+            <label class="check">
+              <input id="overlay-video-audio" type="checkbox" />
+              <span>Mix overlay video audio</span>
+            </label>
+          </div>
+
+          <p class="field-help output-help">
+            4K and 60 fps are offered for capability testing; support and practical speed are
+            device-specific. Blob output is used in this playground.
+          </p>
+        </section>
+
+        <section class="card run-card" aria-labelledby="run-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Step 3</p>
+              <h2 id="run-title">Check and render</h2>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button id="support-button" class="button secondary" type="button">Detect support</button>
+            <button id="analyze-button" class="button secondary" type="button">Analyze project</button>
+            <button id="render-button" class="button primary" type="button">Render video</button>
+            <button id="cancel-button" class="button danger hidden" type="button">Cancel</button>
+          </div>
+
+          <div class="progress-panel" id="progress-panel" aria-live="polite">
+            <div class="progress-copy">
+              <span id="progress-stage">Ready</span>
+              <span id="progress-percent">0%</span>
+            </div>
+            <progress id="progress" max="1" value="0">0%</progress>
+            <p id="progress-message">Choose a template and run a capability check.</p>
+          </div>
+        </section>
+
+        <section class="card report-card" aria-labelledby="report-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Report</p>
+              <h2 id="report-title">Browser and project status</h2>
+            </div>
+            <span class="status-pill neutral" id="status-pill">Not checked</span>
+          </div>
+          <div id="messages" class="messages" aria-live="polite">
+            <p>Support and analysis results will appear here.</p>
+          </div>
+          <details>
+            <summary>Technical report</summary>
+            <pre id="technical-report">No report yet.</pre>
+          </details>
+        </section>
+
+        <section class="card preview-card" aria-labelledby="preview-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Result</p>
+              <h2 id="preview-title">Preview and measured stats</h2>
+            </div>
+            <a id="save-link" class="button ghost hidden" href="#">Save result</a>
+          </div>
+
+          <div class="preview-shell">
+            <video id="preview" controls playsinline preload="metadata"></video>
+            <div class="empty-preview" id="empty-preview">Your rendered video will appear here.</div>
+          </div>
+
+          <dl class="metrics" id="metrics">
+            <div><dt>Elapsed</dt><dd>—</dd></div>
+            <div><dt>Output</dt><dd>—</dd></div>
+            <div><dt>Frames</dt><dd>—</dd></div>
+            <div><dt>File size</dt><dd>—</dd></div>
+          </dl>
+          <pre id="render-report" class="render-report">No render metrics yet.</pre>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

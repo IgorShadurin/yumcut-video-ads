@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0d0b12" />
+    <meta
+      name="description"
+      content="A framework-free YumCut Video Ads demo that creates videos locally in your browser."
+    />
+    <title>YumCut Studio · Vanilla TypeScript demo</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#studio">Skip to editor</a>
+
+    <div class="page-glow" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="YumCut Studio home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+        <span>YumCut <b>Studio</b></span>
+      </a>
+      <div class="privacy-chip">
+        <span aria-hidden="true">●</span>
+        Local browser render
+      </div>
+    </header>
+
+    <main id="studio" class="shell">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Vanilla TypeScript demo</p>
+          <h1 id="page-title">Turn a template into <em>your</em> next video ad.</h1>
+          <p class="lede">
+            Choose a bundled clip, add your own video and soundtrack, and export the finished cut.
+            Your uploads stay on this device.
+          </p>
+        </div>
+        <div id="environment-badge" class="environment-badge" aria-live="polite">
+          Checking this browser…
+        </div>
+      </section>
+
+      <noscript>
+        <p class="alert error">JavaScript is required to run the YumCut editor.</p>
+      </noscript>
+
+      <div class="studio-grid">
+        <div class="editor-column">
+          <section class="panel" aria-labelledby="template-title">
+            <header class="panel-heading">
+              <span class="step-number">01</span>
+              <div>
+                <p class="kicker">Start with a look</p>
+                <h2 id="template-title">Choose a template</h2>
+              </div>
+            </header>
+
+            <div class="template-grid">
+              <div class="template-preview-shell">
+                <video
+                  id="template-preview"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-label="Selected template preview"
+                ></video>
+                <span id="template-format" class="format-badge">MP4</span>
+              </div>
+              <div class="field-stack">
+                <label for="template-select">Bundled template</label>
+                <select id="template-select">
+                  <option value="/media/bunny-template.mp4">Classic landscape · MP4</option>
+                  <option value="/media/bunny-square.webm">Social square · WebM</option>
+                  <option value="/media/bunny-4k.mp4">Detail showcase · 4K MP4</option>
+                </select>
+                <p id="template-meta" class="field-note">Loading template details…</p>
+                <label class="toggle-row" for="keep-template-audio">
+                  <input id="keep-template-audio" type="checkbox" />
+                  <span>
+                    Keep template audio when present
+                    <small>Bundled demo templates are silent.</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="media-title">
+            <header class="panel-heading">
+              <span class="step-number">02</span>
+              <div>
+                <p class="kicker">Make it yours</p>
+                <h2 id="media-title">Add video and sound</h2>
+              </div>
+            </header>
+
+            <div class="upload-grid">
+              <label class="drop-field" for="overlay-video">
+                <input id="overlay-video" type="file" accept="video/*,.mp4,.webm,.mov" />
+                <span class="upload-icon video-icon" aria-hidden="true">▶</span>
+                <span>
+                  <strong>Add your video</strong>
+                  <small id="overlay-video-name">MP4, WebM or MOV</small>
+                </span>
+                <span class="choose-pill">Choose file</span>
+              </label>
+
+              <label class="drop-field" for="music-file">
+                <input id="music-file" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg" />
+                <span class="upload-icon music-icon" aria-hidden="true">♫</span>
+                <span>
+                  <strong>Add your music</strong>
+                  <small id="music-file-name">MP3, AAC, WAV or OGG</small>
+                </span>
+                <span class="choose-pill">Choose file</span>
+              </label>
+            </div>
+
+            <label class="toggle-row sample-music" for="sample-music">
+              <input id="sample-music" type="checkbox" />
+              <span>
+                Use the bundled demo soundtrack when no music is uploaded
+                <small>Useful for trying the complete workflow immediately.</small>
+              </span>
+            </label>
+
+            <div class="two-fields">
+              <label>
+                Overlay layout
+                <select id="overlay-layout">
+                  <option value="pip">Picture in picture</option>
+                  <option value="hero">Centered hero crop</option>
+                  <option value="full">Full-frame replacement</option>
+                </select>
+              </label>
+              <label>
+                Ad caption <span class="optional">optional</span>
+                <input id="caption" type="text" maxlength="80" placeholder="Make the moment yours" />
+              </label>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="output-title">
+            <header class="panel-heading">
+              <span class="step-number">03</span>
+              <div>
+                <p class="kicker">Pick the destination</p>
+                <h2 id="output-title">Set the final format</h2>
+              </div>
+            </header>
+
+            <div class="output-grid">
+              <label>
+                Orientation
+                <select id="orientation">
+                  <option value="landscape">Landscape · 16:9</option>
+                  <option value="portrait">Portrait · 9:16</option>
+                  <option value="square">Square · 1:1</option>
+                </select>
+              </label>
+              <label>
+                Resolution
+                <select id="resolution">
+                  <option value="720">720p · fast</option>
+                  <option value="1080" selected>1080p · recommended</option>
+                  <option value="2160">4K · device dependent</option>
+                </select>
+              </label>
+              <label>
+                Quality
+                <select id="quality">
+                  <option value="balanced" selected>Balanced</option>
+                  <option value="high">High</option>
+                </select>
+              </label>
+              <label>
+                Container
+                <select id="format">
+                  <option value="auto" selected>Auto · best available</option>
+                  <option value="mp4">MP4</option>
+                  <option value="webm">WebM</option>
+                </select>
+              </label>
+            </div>
+            <p id="output-summary" class="output-summary">1920 × 1080 · 30 fps · aspect-safe cover</p>
+          </section>
+
+          <section class="panel action-panel" aria-labelledby="render-title">
+            <header class="panel-heading action-heading">
+              <span class="step-number">04</span>
+              <div>
+                <p class="kicker">Ready when you are</p>
+                <h2 id="render-title">Check, compose, export</h2>
+              </div>
+            </header>
+
+            <div class="action-row">
+              <button id="support-button" class="button secondary" type="button">Check support</button>
+              <button id="analyze-button" class="button secondary" type="button">Analyze project</button>
+              <button id="render-button" class="button primary" type="button">
+                <span aria-hidden="true">✦</span> Create video
+              </button>
+              <button id="cancel-button" class="button danger hidden" type="button">Cancel render</button>
+            </div>
+
+            <div id="progress-card" class="progress-card" aria-live="polite">
+              <div class="progress-copy">
+                <strong id="progress-stage">Ready to create</strong>
+                <span id="progress-percent">0%</span>
+              </div>
+              <progress id="progress" max="1" value="0">0%</progress>
+              <p id="progress-message">Run a support check for the selected output profile.</p>
+            </div>
+          </section>
+        </div>
+
+        <aside class="result-column" aria-label="Video result">
+          <section class="panel sticky-result" aria-labelledby="result-title">
+            <header class="result-heading">
+              <div>
+                <p class="kicker">Live output</p>
+                <h2 id="result-title">Your final cut</h2>
+              </div>
+              <span id="status-pill" class="status-pill neutral">Not checked</span>
+            </header>
+
+            <div id="result-frame" class="result-frame landscape">
+              <video id="result-video" controls playsinline preload="metadata"></video>
+              <div id="empty-result" class="empty-result">
+                <span aria-hidden="true">✦</span>
+                <strong>Nothing rendered yet</strong>
+                <small>Your completed video will appear here.</small>
+              </div>
+            </div>
+
+            <div id="report" class="report" aria-live="polite">
+              <p>Choose your media, then check whether this browser supports the selected profile.</p>
+            </div>
+
+            <dl class="metrics" aria-label="Render metrics">
+              <div><dt>Duration</dt><dd id="metric-duration">—</dd></div>
+              <div><dt>Size</dt><dd id="metric-size">—</dd></div>
+              <div><dt>Render</dt><dd id="metric-time">—</dd></div>
+              <div><dt>Frames</dt><dd id="metric-frames">—</dd></div>
+            </dl>
+
+            <div class="result-actions">
+              <a id="download-link" class="button primary disabled" aria-disabled="true">Download video</a>
+              <button id="clear-result" class="button quiet" type="button" disabled>Clear result</button>
+            </div>
+
+            <details>
+              <summary>Technical details</summary>
+              <pre id="technical-report">No report yet.</pre>
+            </details>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer>
+      <p>Built with <strong>YumCut Video Ads</strong> · processed locally with browser media APIs</p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

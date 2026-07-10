@@ -1,0 +1,111 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #f8fafc;
+  background: #070a12;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 4%, rgb(45 212 191 / 18%), transparent 30rem),
+    radial-gradient(circle at 90% 0%, rgb(99 102 241 / 21%), transparent 34rem),
+    #070a12;
+}
+
+main {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 42px 0 64px;
+}
+
+header,
+.card-heading,
+.progress-label,
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 8px; font-size: clamp(2rem, 5vw, 3.75rem); letter-spacing: -0.045em; }
+h2 { margin-bottom: 0; font-size: 1.1rem; }
+.lede { max-width: 620px; margin-bottom: 0; color: #9ca3af; }
+.eyebrow { margin-bottom: 7px; color: #5eead4; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; }
+
+.status {
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  border: 1px solid rgb(148 163 184 / 25%);
+  border-radius: 999px;
+  color: #cbd5e1;
+  background: rgb(15 23 42 / 72%);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+body[data-state="ready"] .status,
+body[data-state="complete"] .status { border-color: rgb(45 212 191 / 45%); color: #5eead4; }
+body[data-state="error"] .status,
+body[data-state="unsupported"] .status { border-color: rgb(251 113 133 / 55%); color: #fda4af; }
+
+.controls { justify-content: flex-start; margin-top: 30px; }
+button, a {
+  border: 1px solid rgb(148 163 184 / 30%);
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: #e2e8f0;
+  background: #111827;
+  font: inherit;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+}
+button.primary { border-color: #2dd4bf; color: #06110f; background: #2dd4bf; }
+button:disabled { opacity: 0.45; cursor: wait; }
+
+.progress-panel,
+.preview-card,
+.metrics-card,
+details {
+  border: 1px solid rgb(148 163 184 / 16%);
+  border-radius: 18px;
+  background: rgb(15 23 42 / 72%);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 25%);
+  backdrop-filter: blur(16px);
+}
+
+.progress-panel { margin: 20px 0; padding: 18px 20px 14px; }
+.progress-label { margin-bottom: 10px; font-size: 0.85rem; font-weight: 750; }
+progress { display: block; width: 100%; height: 9px; border: 0; accent-color: #2dd4bf; }
+#progress-message { margin: 9px 0 0; color: #94a3b8; font-size: 0.78rem; }
+
+.content-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.8fr); gap: 20px; }
+.preview-card { padding: 20px; }
+.video-shell { position: relative; aspect-ratio: 16 / 9; margin-top: 18px; overflow: hidden; border-radius: 12px; background: #020307; }
+video { display: block; width: 100%; height: 100%; object-fit: contain; }
+#preview-placeholder { position: absolute; inset: 0; display: grid; place-items: center; color: #64748b; font-size: 0.84rem; }
+body[data-state="complete"] #preview-placeholder { display: none; }
+
+aside { display: grid; align-content: start; gap: 20px; }
+.metrics-card, details { padding: 18px; }
+dl { display: grid; gap: 12px; margin: 16px 0 0; }
+dl div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 10px; border-bottom: 1px solid rgb(148 163 184 / 12%); }
+dt { color: #94a3b8; }
+dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 750; }
+summary { cursor: pointer; font-weight: 750; }
+pre { max-height: 360px; margin: 15px 0 0; overflow: auto; white-space: pre-wrap; color: #a7f3d0; font: 0.7rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.error { margin: 20px 0 0; border: 1px solid rgb(251 113 133 / 45%); border-radius: 12px; padding: 13px 15px; color: #fecdd3; background: rgb(127 29 29 / 24%); }
+
+@media (max-width: 760px) {
+  main { width: min(100% - 24px, 680px); padding-top: 24px; }
+  header { align-items: flex-start; flex-direction: column; }
+  .content-grid { grid-template-columns: 1fr; }
+  .controls { flex-wrap: wrap; }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "title": "Big Buck Bunny",
+    "creator": "Blender Foundation",
+    "url": "https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4",
+    "sha256": "f78f39603e6774907f2faafabf26a667f4a6fc31769ec304a8a8f7c62d280508",
+    "license": "CC-BY-3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+  },
+  "derived": {
+    "bunny-template.mp4": "a6697679a63f593ca1154f9537172691cd3fc56f7312abeb38cce8449a7e3d86",
+    "bunny-4k.mp4": "c347017a5c7a708412a07442407333aa4aa6ecc9ef9194a930a9110607eed008",
+    "bunny-square.webm": "69eddd706533efc84cdc1a88945a48ab652a6968cd717e55d25323f35cdaaaeb",
+    "bunny-poster.jpg": "cdf2ab2ec5de781084c112ec8a4c1ec7316bc65f32c98a7eb96d642fec884864"
+  },
+  "generated": {
+    "yumcut-demo-music.ogg": "d852eba0a9d86bae590a99d6cd6b155167dff5c26e4ad93d704999e840c9ce9f"
+  }
+}
