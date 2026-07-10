@@ -167,9 +167,25 @@ describe('media source helpers', () => {
       headers: { Range: 'bytes=0-31' },
     });
     expect(response.status).toBe(200);
+    expect(response.headers.get('content-length')).toBe('128');
+    expect(new Uint8Array(await response.arrayBuffer())).toEqual(new Uint8Array(128));
   });
 
-  it('rejects an unbounded complete response when a server ignores Range', async () => {
+  it('accepts a bounded complete response without Content-Length when a CDN ignores Range', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(new Uint8Array([1, 2, 3, 4]), {
+      status: 200,
+    })));
+
+    const response = await __private__.boundedMediaFetch('https://media.example/cdn.mp4', {
+      headers: { Range: 'bytes=0-31' },
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-length')).toBe('4');
+    expect([...new Uint8Array(await response.arrayBuffer())]).toEqual([1, 2, 3, 4]);
+  });
+
+  it('rejects an oversized complete response when a server ignores Range', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(new Uint8Array(8), {
       status: 200,
       headers: { 'content-length': String(80 * 1024 * 1024) },

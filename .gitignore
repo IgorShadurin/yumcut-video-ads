@@ -18,5 +18,9 @@ yarn-error.log*
 /.pnp
 .pnp.js
 
+# Local deployment credentials must never enter the repository.
+coolify-api.env
+.coolify/
+
 .vscode/*
 .idea

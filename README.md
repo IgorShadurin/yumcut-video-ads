@@ -387,7 +387,7 @@ const authenticatedTemplate = {
 };
 ```
 
-Cross-origin servers must allow your page origin with `Access-Control-Allow-Origin`. For efficient seeking, servers should also support byte ranges and expose relevant response headers. Browser security rules prevent the library from reading opaque responses; a URL that plays in a plain `<video>` element is not necessarily readable through WebCodecs.
+Cross-origin servers must allow your page origin with `Access-Control-Allow-Origin`. For efficient seeking, servers should also support byte ranges and expose relevant response headers. If a CDN ignores a range request, YumCut can safely use its complete response when the body is at most 64 MiB—even when the CDN omits `Content-Length`. Larger complete responses are stopped at that bound; prefetch them with `cache: 'persistent'` or provide a `Blob`/`File`. Browser security rules prevent the library from reading opaque responses; a URL that plays in a plain `<video>` element is not necessarily readable through WebCodecs.
 
 Cache modes are:
 

@@ -126,36 +126,103 @@ const createBoundedRetryPolicy = (): typeof urlRetryDelay => {
   };
 };
 
+async function bufferIgnoredRangeResponse(
+  response: Response,
+  requestUrl: string,
+): Promise<Response> {
+  const rawLength = response.headers.get('content-length');
+  const declaredLength = rawLength === null ? undefined : Number(rawLength);
+  if (
+    declaredLength !== undefined &&
+    Number.isFinite(declaredLength) &&
+    declaredLength > MAX_IGNORED_RANGE_RESPONSE_BYTES
+  ) {
+    await response.body?.cancel().catch(() => undefined);
+    throw ignoredRangeError(requestUrl, declaredLength);
+  }
+
+  const reader = response.body?.getReader();
+  if (!reader) {
+    const headers = new Headers(response.headers);
+    headers.set('content-length', '0');
+    return new Response(null, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  const chunks: Uint8Array[] = [];
+  let receivedBytes = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (!value) continue;
+      receivedBytes += value.byteLength;
+      if (receivedBytes > MAX_IGNORED_RANGE_RESPONSE_BYTES) {
+        await reader.cancel().catch(() => undefined);
+        throw ignoredRangeError(requestUrl, declaredLength, receivedBytes);
+      }
+      chunks.push(value);
+    }
+  } catch (error) {
+    if (error instanceof VideoAdsError) throw error;
+    throw VideoAdsError.from(
+      error,
+      'FETCH_FAILED',
+      'Unable to buffer the complete media response returned by a server that ignored byte ranges.',
+      { url: requestUrl, receivedBytes },
+    );
+  } finally {
+    reader.releaseLock();
+  }
+
+  const headers = new Headers(response.headers);
+  headers.set('content-length', String(receivedBytes));
+  const body = new Uint8Array(receivedBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  chunks.length = 0;
+  return new Response(body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+function ignoredRangeError(
+  url: string,
+  contentLength?: number,
+  receivedBytes?: number,
+): VideoAdsError {
+  return new VideoAdsError(
+    'FETCH_FAILED',
+    'The media server ignored byte-range requests and its complete response exceeds the safe in-memory fallback. Prefetch it with cache: "persistent", or provide a Blob/File.',
+    {
+      details: {
+        url,
+        ...(Number.isFinite(contentLength) ? { contentLength } : {}),
+        ...(receivedBytes === undefined ? {} : { receivedBytes }),
+        maximumBufferedBytes: MAX_IGNORED_RANGE_RESPONSE_BYTES,
+      },
+    },
+  );
+}
+
 /**
  * UrlSource may otherwise buffer an entire large asset when a host ignores a
- * byte-range request. Small complete responses remain useful, but an unknown
- * or large one must be prefetched to persistent storage (or supplied as Blob)
- * so memory use stays bounded.
+ * byte-range request. Complete responses are buffered only up to a hard cap,
+ * which also lets CDN responses without Content-Length remain usable.
  */
 const boundedMediaFetch: typeof fetch = async (input, init) => {
   const request = new Request(input, init);
   const response = await fetch(input, init);
   if (request.headers.has('range') && response.status === 200) {
-    const rawLength = response.headers.get('content-length');
-    const length = rawLength === null ? undefined : Number(rawLength);
-    const safeSmallResponse = length !== undefined &&
-      Number.isFinite(length) &&
-      length >= 0 &&
-      length <= MAX_IGNORED_RANGE_RESPONSE_BYTES;
-    if (!safeSmallResponse) {
-      await response.body?.cancel().catch(() => undefined);
-      throw new VideoAdsError(
-        'FETCH_FAILED',
-        'The media server ignored byte-range requests for a large or unknown-size asset. Prefetch it with cache: "persistent", or provide a Blob/File.',
-        {
-          details: {
-            url: request.url,
-            contentLength: Number.isFinite(length) ? length : undefined,
-            maximumBufferedBytes: MAX_IGNORED_RANGE_RESPONSE_BYTES,
-          },
-        },
-      );
-    }
+    return bufferIgnoredRangeResponse(response, request.url);
   }
   return response;
 };
