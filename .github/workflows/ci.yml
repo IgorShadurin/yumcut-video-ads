@@ -28,6 +28,7 @@ jobs:
       - run: npm run build
       - run: npm run test:browser
       - run: npm run test:demos
+      - run: npm run test:showcase
       - run: npm pack --dry-run
 
       - name: Upload browser evidence

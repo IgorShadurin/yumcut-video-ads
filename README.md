@@ -118,6 +118,53 @@ npm run build:demos
 See each demo README for its development command. The source media attribution and
 reproducible checksums are documented in [`MEDIA_LICENSES.md`](./MEDIA_LICENSES.md).
 
+## Deploy the demo hub on Coolify
+
+The repository is ready to deploy as one application. It builds a landing page and
+all three editors, serves video byte ranges, exposes a health check, and needs no
+secrets, volumes, databases, or application environment variables.
+
+For the lowest-configuration Coolify deployment:
+
+1. Create a **Public Repository** application from
+   `https://github.com/IgorShadurin/yumcut-video-ads` on the `main` branch.
+2. Keep the default **Nixpacks** build pack and deploy. The committed
+   [`nixpacks.toml`](./nixpacks.toml) installs, builds, and starts the complete hub.
+3. If the Coolify version asks for an exposed port, use `3000`. Set the optional
+   health-check path to `/healthz`; no environment variables are required.
+
+The generated HTTPS domain serves:
+
+| Path | Application |
+| --- | --- |
+| `/` | Demo chooser |
+| `/nextjs/` | Next.js App Router editor |
+| `/react/` | React + Vite editor |
+| `/vanilla/` | Vanilla TypeScript editor |
+| `/media/` | Bundled media and attribution |
+| `/healthz` | Container/application health (`200 ok`) |
+
+HTTPS is important because WebCodecs and related browser APIs require a secure
+context outside localhost. The application listens on Coolify's injected `PORT`
+and streams large media from disk instead of loading it into the server process.
+
+Two repository-defined alternatives are also available:
+
+- Choose **Dockerfile**, leave the path as `Dockerfile`, and expose port `80`.
+- Choose **Docker Compose** and deploy the root `docker-compose.yml`; its Coolify
+  service URL variable, health check, port, and build are already declared.
+
+To exercise the same production build locally:
+
+```sh
+npm ci
+npm run build:showcase
+npm start
+```
+
+Then open `http://localhost:3000`. For the container path, run
+`docker compose up --build` and open the URL assigned by your container platform.
+
 ## Quick start
 
 ```ts

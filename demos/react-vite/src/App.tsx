@@ -42,26 +42,29 @@ interface ResultSummary {
   elapsed: string;
 }
 
+const publicAsset = (path: string): string =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+
 const TEMPLATES: readonly TemplateOption[] = [
   {
     id: 'classic',
     title: 'Classic motion',
     description: 'A compact MP4 starter with motion and natural texture.',
-    source: '/media/bunny-template.mp4',
+    source: publicAsset('media/bunny-template.mp4'),
     detail: 'MP4 · landscape',
   },
   {
     id: 'social',
     title: 'Social square',
     description: 'A square WebM source that demonstrates aspect-safe cropping.',
-    source: '/media/bunny-square.webm',
+    source: publicAsset('media/bunny-square.webm'),
     detail: 'WebM · square',
   },
   {
     id: 'detail',
     title: 'High-detail source',
     description: 'A 4K source for checking browser decode and downscale performance.',
-    source: '/media/bunny-4k.mp4',
+    source: publicAsset('media/bunny-4k.mp4'),
     detail: 'MP4 · 4K source',
   },
 ] as const;
@@ -346,7 +349,7 @@ function App() {
       : musicMode === 'sample'
         ? {
             type: 'url' as const,
-            url: new URL('/media/yumcut-demo-music.ogg', window.location.href),
+            url: new URL(publicAsset('media/yumcut-demo-music.ogg'), window.location.origin),
             cache: 'browser' as const,
           }
         : null;
@@ -559,7 +562,7 @@ function App() {
                   disabled={busy}
                 >
                   <span className="template-thumb">
-                    <img src="/media/bunny-poster.jpg" alt="" />
+                    <img src={publicAsset('media/bunny-poster.jpg')} alt="" />
                     <span className="template-chip">{template.detail}</span>
                     <span className="selection-check"><CheckIcon /></span>
                   </span>
@@ -707,7 +710,7 @@ function App() {
                   data-testid={previewUrl ? 'result-video' : 'template-preview'}
                   aria-label={previewUrl ? 'Rendered result preview' : `${selectedTemplate.title} template preview`}
                   src={previewUrl ?? selectedTemplate.source}
-                  poster={previewUrl ? undefined : '/media/bunny-poster.jpg'}
+                  poster={previewUrl ? undefined : publicAsset('media/bunny-poster.jpg')}
                   controls
                   muted={!previewUrl}
                   loop={!previewUrl}

@@ -17,11 +17,14 @@ import {
 } from 'yumcut-video-ads';
 import './style.css';
 
-const TEMPLATES = {
-  '/media/bunny-template.mp4': { label: 'Classic landscape', format: 'MP4' },
-  '/media/bunny-square.webm': { label: 'Social square', format: 'WebM' },
-  '/media/bunny-4k.mp4': { label: 'Detail showcase', format: '4K MP4' },
-} as const;
+const publicAsset = (path: string): string =>
+  `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+
+const TEMPLATES: Readonly<Record<string, { label: string; format: string }>> = {
+  [publicAsset('media/bunny-template.mp4')]: { label: 'Classic landscape', format: 'MP4' },
+  [publicAsset('media/bunny-square.webm')]: { label: 'Social square', format: 'WebM' },
+  [publicAsset('media/bunny-4k.mp4')]: { label: 'Detail showcase', format: '4K MP4' },
+};
 
 type Orientation = 'landscape' | 'portrait' | 'square';
 type Resolution = '720' | '1080' | '2160';
@@ -222,7 +225,7 @@ async function buildProject(): Promise<Project> {
   const uploadedMusic = selectedFile(musicFile);
   const musicSource: MediaSource | undefined = uploadedMusic
     ?? (sampleMusic.checked
-      ? { type: 'url', url: new URL('/media/yumcut-demo-music.ogg', window.location.href).href, cache: 'browser' }
+      ? { type: 'url', url: new URL(publicAsset('media/yumcut-demo-music.ogg'), window.location.origin).href, cache: 'browser' }
       : undefined);
   if (musicSource) {
     const audioClip: AudioClip = {
@@ -419,7 +422,7 @@ function updateOutputPresentation(): void {
 }
 
 async function refreshTemplatePreview(): Promise<void> {
-  const selected = TEMPLATES[templateSelect.value as keyof typeof TEMPLATES];
+  const selected = TEMPLATES[templateSelect.value];
   templatePreview.src = templateSelect.value;
   templateFormat.textContent = selected?.format ?? 'Video';
   templateMeta.textContent = selected ? `${selected.label} · reading metadata…` : 'Reading metadata…';

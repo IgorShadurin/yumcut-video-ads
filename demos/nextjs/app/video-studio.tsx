@@ -39,26 +39,30 @@ interface ResultView {
   warnings: readonly string[];
 }
 
+const APP_BASE_PATH = process.env.NEXT_PUBLIC_YUMCUT_BASE_PATH ?? '';
+const publicAsset = (path: string): string =>
+  `${APP_BASE_PATH}/${path.replace(/^\/+/, '')}`;
+
 const TEMPLATES: readonly TemplateChoice[] = [
   {
     id: 'classic',
     name: 'Bunny classic',
     detail: '4 seconds · silent H.264 · 16:9',
-    src: '/media/bunny-template.mp4',
-    poster: '/media/bunny-poster.jpg',
+    src: publicAsset('media/bunny-template.mp4'),
+    poster: publicAsset('media/bunny-poster.jpg'),
   },
   {
     id: 'square',
     name: 'Bunny social square',
     detail: '2 seconds · silent VP9 · 1:1',
-    src: '/media/bunny-square.webm',
+    src: publicAsset('media/bunny-square.webm'),
   },
   {
     id: '4k',
     name: 'Bunny 4K surface',
     detail: '1 second · silent H.264 · 3840×2160',
-    src: '/media/bunny-4k.mp4',
-    poster: '/media/bunny-poster.jpg',
+    src: publicAsset('media/bunny-4k.mp4'),
+    poster: publicAsset('media/bunny-poster.jpg'),
   },
 ];
 
@@ -172,7 +176,7 @@ export default function VideoStudio() {
       try {
         const { createYumCutVideoAds } = await import('yumcut-video-ads');
         if (!active) return;
-        const client = createYumCutVideoAds({ workerUrl: '/vendor/yumcut-render-worker.js' });
+        const client = createYumCutVideoAds({ workerUrl: publicAsset('vendor/yumcut-render-worker.js') });
         clientRef.current = client;
         setReady(true);
         const initialReport = await client.detectSupport({
@@ -306,7 +310,7 @@ export default function VideoStudio() {
       });
     }
 
-    const musicSource = music ?? (useDemoMusic ? '/media/yumcut-demo-music.ogg' : null);
+    const musicSource = music ?? (useDemoMusic ? publicAsset('media/yumcut-demo-music.ogg') : null);
     if (musicSource) {
       tracks.push({
         id: 'music-track',

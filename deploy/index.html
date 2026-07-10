@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#09090b" />
+    <meta
+      name="description"
+      content="Try YumCut Video Ads in production-ready Next.js, React, and vanilla TypeScript demos."
+    />
+    <title>YumCut Video Ads · Demo hub</title>
+    <style>
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #09090b; color: #fafafa; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 16% -12%, rgba(249, 115, 22, .2), transparent 37rem), radial-gradient(circle at 93% 12%, rgba(168, 85, 247, .13), transparent 34rem), #09090b; }
+      a { color: inherit; }
+      .shell { width: min(1120px, calc(100% - 36px)); margin: 0 auto; padding: 28px 0 72px; }
+      nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+      .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 800; letter-spacing: -.02em; }
+      .mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, #fb923c, #db2777); box-shadow: 0 10px 30px rgba(236, 72, 153, .2); }
+      .local { padding: 8px 12px; border: 1px solid #27272a; border-radius: 999px; color: #a1a1aa; font-size: 13px; }
+      .local::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 12px #4ade80; }
+      header { max-width: 850px; padding: 112px 0 64px; }
+      .eyebrow { margin: 0 0 18px; color: #fb923c; font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+      h1 { margin: 0; font-size: clamp(48px, 8vw, 88px); line-height: .98; letter-spacing: -.07em; }
+      h1 span { background: linear-gradient(100deg, #fdba74, #f472b6 55%, #c084fc); color: transparent; background-clip: text; -webkit-background-clip: text; }
+      .lede { max-width: 720px; margin: 28px 0 0; color: #a1a1aa; font-size: clamp(17px, 2.1vw, 21px); line-height: 1.65; }
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .card { position: relative; display: flex; min-height: 300px; flex-direction: column; overflow: hidden; padding: 28px; border: 1px solid #27272a; border-radius: 24px; background: rgba(24, 24, 27, .75); text-decoration: none; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+      .card:hover { transform: translateY(-5px); border-color: #52525b; background: #1c1c20; }
+      .card::after { content: ""; position: absolute; width: 180px; height: 180px; right: -70px; bottom: -85px; border-radius: 50%; background: var(--glow); filter: blur(25px); opacity: .24; }
+      .tag { align-self: flex-start; padding: 7px 10px; border: 1px solid #3f3f46; border-radius: 8px; color: #d4d4d8; font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .card h2 { margin: auto 0 9px; font-size: 28px; letter-spacing: -.04em; }
+      .card p { margin: 0; color: #a1a1aa; line-height: 1.55; }
+      .go { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-weight: 750; }
+      .go span { transition: transform .2s ease; }
+      .card:hover .go span { transform: translateX(4px); }
+      footer { display: flex; justify-content: space-between; gap: 20px; margin-top: 28px; padding: 24px 2px; color: #71717a; font-size: 13px; }
+      footer a:hover { color: #d4d4d8; }
+      @media (max-width: 780px) { header { padding-top: 82px; } .grid { grid-template-columns: 1fr; } .card { min-height: 230px; } }
+      @media (max-width: 520px) { .shell { width: min(100% - 24px, 1120px); padding-top: 18px; } .local { font-size: 0; } .local::before { margin-right: 0; } header { padding: 70px 0 44px; } footer { flex-direction: column; } }
+      @media (prefers-reduced-motion: reduce) { .card, .go span { transition: none; } }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <nav>
+        <a class="brand" href="/" aria-label="YumCut Video Ads demo hub"><span class="mark">Y</span><span>YumCut Video Ads</span></a>
+        <span class="local">Runs locally in your browser</span>
+      </nav>
+      <header>
+        <p class="eyebrow">Choose your integration</p>
+        <h1>Build the cut.<br /><span>Keep the media.</span></h1>
+        <p class="lede">Three complete browser editors, one production deployment. Pick a framework, combine a bundled template with your own video and music, then preview and download the result without uploading source media.</p>
+      </header>
+      <main class="grid">
+        <a class="card" href="/nextjs/" style="--glow:#f97316">
+          <span class="tag">NEXT.JS 16</span><h2>App Router studio</h2><p>A client-side editor inside a statically exported Next.js application.</p><span class="go">Open demo <span>→</span></span>
+        </a>
+        <a class="card" href="/react/" style="--glow:#06b6d4">
+          <span class="tag">REACT 19 + VITE</span><h2>React studio</h2><p>Component-driven controls, progress, support checks, and final playback.</p><span class="go">Open demo <span>→</span></span>
+        </a>
+        <a class="card" href="/vanilla/" style="--glow:#a855f7">
+          <span class="tag">VANILLA TYPESCRIPT</span><h2>Zero-framework studio</h2><p>The same complete workflow with direct DOM APIs and a lean Vite build.</p><span class="go">Open demo <span>→</span></span>
+        </a>
+      </main>
+      <footer><span>YumCut Video Ads · MIT licensed</span><span><a href="/media/">Bundled media &amp; attribution</a> · <a href="https://github.com/IgorShadurin/yumcut-video-ads">Source on GitHub</a></span></footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+services:
+  yumcut:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    environment:
+      - SERVICE_FQDN_YUMCUT_80
+    restart: unless-stopped
